@@ -50,6 +50,7 @@ class Homework(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     task = models.ForeignKey("api.Task",on_delete=models.CASCADE)
     file = models.FileField(upload_to="homework")
+    github_link = models.URLField(null=True)
 
     def __str__(self):
         return f"{self.task}"

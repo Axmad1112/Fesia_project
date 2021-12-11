@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CategoryListView,TaskListViewListCreateAPIView,HomeworkViewListCreateAPIView
+from .views import CategoryListView,TaskListViewListCreateAPIView,HomeworkViewListCreateAPIView,TeacherListCreateView
 
 urlpatterns = [
     path("category/", CategoryListView.as_view()),

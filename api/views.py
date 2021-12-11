@@ -1,10 +1,29 @@
 from rest_framework import generics
 from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer,TeacherSerializer
 from .models import Categories, Teacher, Course, Video, Task, Homework
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
 #GET and POST
 class TeacherListCreateView(generics.ListCreateAPIView):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+
+# GET_ID
+class TeacherRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+
+
+# PUT_ID
+class TeacherUpdateAPIView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+
+
+# DELETE_ID
+class TeacherDestroyAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Teacher.objects.all()
     serializer_class = TeacherSerializer
 

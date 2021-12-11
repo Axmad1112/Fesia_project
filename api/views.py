@@ -13,8 +13,13 @@ class CategoryListView(generics.ListAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
 
-
 class TaskListViewListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
@@ -25,4 +30,6 @@ class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        
+
 

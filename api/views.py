@@ -3,6 +3,7 @@ from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer
 from .models import *
 
 # Create your views here.
+#comment yozildi
 class CategoryListView(generics.ListAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer

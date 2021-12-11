@@ -1,5 +1,5 @@
 from rest_framework import generics
-from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer
+from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer,TeacherSerializer
 from .models import Categories, Teacher, Course, Video, Task, Homework
 from rest_framework.permissions import IsAuthenticated
 

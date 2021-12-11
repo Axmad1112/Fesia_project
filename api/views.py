@@ -1,9 +1,9 @@
 from rest_framework import generics
 from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer
 from .models import *
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
-#comment yozildi
 class CategoryListView(generics.ListAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
@@ -14,6 +14,7 @@ class TaskListViewListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
 
 class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Homework.objects.all()
     serializer_class = HomeworkSerializer
 

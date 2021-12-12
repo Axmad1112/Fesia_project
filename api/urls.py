@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     CategoryListView, TaskListViewListCreateAPIView,TaskDetail,
     HomeworkViewListCreateAPIView, TeacherListCreateView,
-    TeacherUpdateAPIView, TeacherDestroyAPIView,TeacherRetrieveAPIView
+    TeacherUpdateAPIView, TeacherDestroyAPIView,TeacherRetrieveAPIView,VideoListCreateAPIView,VideoRetrieveAPIView,VideoUpdateAPIView,VideoDestroyAPIView
 )
 
 
@@ -15,4 +15,8 @@ urlpatterns = [
     path("task/", TaskListViewListCreateAPIView.as_view()),
     path("task/<int:pk>/", TaskDetail.as_view()),
     path("homework/", HomeworkViewListCreateAPIView.as_view()),
+    path("video/",VideoListCreateAPIView.as_view()),
+    path("video/<int:pk>/",VideoRetrieveAPIView.as_view()),
+    path("video/<int:pk>/update/",VideoUpdateAPIView.as_view()),
+    path("video/<int:pk>/delete/",VideoDestroyAPIView.as_view())
 ]

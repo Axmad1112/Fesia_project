@@ -1,5 +1,5 @@
 from rest_framework import generics
-from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer,TeacherSerializer
+from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer,TeacherSerializer,VideoSerializer
 from .models import Categories, Teacher, Course, Video, Task, Homework
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
@@ -31,6 +31,27 @@ class TeacherDestroyAPIView(generics.DestroyAPIView):
 class CategoryListView(generics.ListAPIView):
     queryset = Categories.objects.all()
     serializer_class = CategorySerializer
+
+class VideoListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+
+class VideoRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+
+class VideoUpdateAPIView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+
+class VideoDestroyAPIView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
+
+
 
 class TaskListViewListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]

@@ -22,3 +22,7 @@ class HomeworkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Homework
         fields = "__all__"
+
+class VideoSerializer(serializers.ModelSerializer):
+    model = Video
+    fields = "__all__"

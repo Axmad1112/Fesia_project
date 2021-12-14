@@ -71,5 +71,7 @@ class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
         
-
+class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Homework.objects.all()
+    serializer_class = HomeworkSerializer
 

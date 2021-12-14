@@ -1,7 +1,17 @@
-from rest_framework import generics
-from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer,TeacherSerializer,VideoSerializer
+from rest_framework import generics, serializers, viewsets, permissions
+from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer,TeacherSerializer,VideoSerializer,CourseSerializer,CourseOpenUpdateSerializer
 from .models import Categories, Teacher, Course, Video, Task, Homework
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework import filters
+
+
+def coin(cost):
+    main_coin = 1000
+    # data = request.user.coin  
+    print(main_coin-cost,"narxi")
+    if main_coin>=cost:
+        return True
+    return False
 
 #GET and POST
 class TeacherListCreateView(generics.ListCreateAPIView):
@@ -33,7 +43,7 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 class VideoListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
@@ -42,16 +52,14 @@ class VideoRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = VideoSerializer
 
 class VideoUpdateAPIView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
 class VideoDestroyAPIView(generics.DestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
-
-
 
 class TaskListViewListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -74,4 +82,50 @@ class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
 class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Homework.objects.all()
     serializer_class = HomeworkSerializer
+
+#Course
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name','teacher_id']
+    
+    def get_queryset(self):
+        todo = Course.objects.filter(banned__isnull=False)
+        return todo
+    # permission_classes = [permissions.IsAuthenticated]
+    
+#banned kurslar
+class CourseBannedViewSet(generics.ListAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name','teacher_id']
+    
+    def get_queryset(self):
+        todo = Course.objects.filter(banned__isnull=True)
+        return todo
+    
+#Course open view
+class CourseOpenUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Course
+    serializer_class = CourseOpenUpdateSerializer
+    # permission_classes = [permissions.IsAuthenticated]
+
+    # def get_queryset(self):
+    #     detail = Todo.objects.filter(user=self.request.user)
+    #     return detail
+    
+    def perform_update(self, serializer):
+        narx = coin(serializer.instance.cost)
+        print(narx)
+        if narx is True:
+            serializer.instance.banned = False
+        else:
+            serializer.instance.banned = True
+        serializer.save()
+        return super().perform_update(serializer)
+    
+
+
 

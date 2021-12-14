@@ -20,6 +20,7 @@ class Categories(models.Model):
 
 class Course(models.Model):
     name = models.CharField(max_length=200)
+    user = models.ManyToManyField(User)
     image = models.ImageField(upload_to="courses_image", height_field=None, width_field=None, max_length=None)
     category_id = models.ForeignKey("api.Categories", on_delete=models.CASCADE,related_name="courses")
     teacher_id = models.ForeignKey("api.Teacher", on_delete=models.SET_NULL, related_name="courses",null=True)

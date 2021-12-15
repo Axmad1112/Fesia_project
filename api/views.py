@@ -103,7 +103,7 @@ class CourseBannedViewSet(generics.ListAPIView):
     search_fields = ['name','teacher_id']
     
     def get_queryset(self):
-        todo = Course.objects.filter(banned__isnull=True)
+        todo = Course.objects.filter(banned=True)
         return todo
     
 #Course open view

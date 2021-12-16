@@ -1,5 +1,6 @@
 from django.db import models
-# from django.contrib.auth.models import User
+import os
+from bank.models import CoinBase
 # Create your models here.
 from django.conf import settings
 from rest_framework.authtoken.models import Token
@@ -63,7 +64,7 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['username']
         
     def __str__(self):
-        return self.email
+        return self.username
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -74,6 +75,8 @@ class User(AbstractBaseUser):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+    
+    
 
     @property
     def is_staff(self):
@@ -107,6 +110,23 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=13)
 
     def __str__(self):
-        return f"{self.user.email}"
+        return f"{self.user.username}"
+    
+    def save(self, *args, **kwargs):
+        bank = CoinBase.objects.first()
+        bank.coin-=self.coin
+        bank.save()
+        print(bank.coin,"bankdan pul olindi")
+        return super(Profile, self).save(*args, **kwargs)
+    
+    
+    def delete(self, *args, **kwargs):
+        profile = Profile.objects.get(email=self.email)
+        bank = CoinBase.objects.first()
+        bank.coin+=self.coin
+        bank.save()
+        return super(Profile, self).delete(*args, **kwargs)
+
+        
  
 

@@ -19,6 +19,10 @@ def create_user_profile(sender, instance, created, **kwargs):
 # def save_user_profile(sender, instance, **kwargs):
 #     instance.profile.save()
 
-# @receiver(post_delete, sender=User)
-# def create_user_profile(sender, instance, **kwargs):
-#     print(instance)
+@receiver(post_delete, sender=Profile)
+def delete_user_profile(sender, instance, **kwargs):
+    if instance.user:
+        user = User.objects.get(username=instance.user.username)
+        user.delete()
+        
+    print(instance)

@@ -1,17 +1,12 @@
 from rest_framework import generics, serializers, viewsets, permissions
 from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer,TeacherSerializer,VideoSerializer,CourseSerializer,CourseOpenUpdateSerializer
 from .models import Categories, Teacher, Course, Video, Task, Homework
+from customer.models import Profile
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import filters
+from django.shortcuts import get_object_or_404
 
 
-def coin(cost):
-    main_coin = 1000
-    # data = request.user.coin  
-    print(main_coin-cost,"narxi")
-    if main_coin>=cost:
-        return True
-    return False
 
 #GET and POST
 class TeacherListCreateView(generics.ListCreateAPIView):
@@ -112,14 +107,20 @@ class CourseOpenUpdateView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CourseOpenUpdateSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
-    # def get_queryset(self):
-    #     detail = Todo.objects.filter(user=self.request.user)
-    #     return detail
+    
+    def get_coin(self,cost):
+        profile_coin = Profile.objects.get(user=self.request.user)
+        profile_coin.coin=profile_coin.coin-cost
+        profile_coin.save()
+        
+        if profile_coin.coin>=0:
+            profile_coin.course.add(Course.objects.get(id=self.kwargs['pk']))
+            return True
+        return False
     
     def perform_update(self, serializer):
-        narx = coin(serializer.instance.cost)
-        print(narx)
-        if narx is True:
+        costs = self.get_coin(serializer.instance.cost)
+        if costs is True:
             serializer.instance.banned = False
         else:
             serializer.instance.banned = True

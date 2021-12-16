@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from customer.models import User
 
 class Teacher(models.Model):
     full_name = models.CharField(max_length=255)
@@ -47,7 +47,7 @@ class Task(models.Model):
         return self.text
 
 class Homework(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user = models.ForeignKey("customer.User",on_delete=models.CASCADE)
     task = models.ForeignKey("api.Task",on_delete=models.CASCADE)
     file = models.FileField(upload_to="homework")
     github_link = models.URLField(null=True)

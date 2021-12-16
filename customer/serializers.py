@@ -8,7 +8,7 @@ User = get_user_model()
 class UserRegisterSerializer(serializers.Serializer):
     token = serializers.CharField(max_length=64,read_only=True)
     email = serializers.EmailField(max_length=255)
-    date_of_birth = serializers.DateField()
+    username = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=200,write_only=True)
     password2 = serializers.CharField(max_length=200,write_only=True)
 
@@ -28,13 +28,19 @@ class UserRegisterSerializer(serializers.Serializer):
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=255,write_only=True)
+    # username = serializers.CharField(max_length=255,write_only=True)
     token = serializers.CharField(max_length=64,read_only=True)
     password = serializers.CharField(max_length=200,write_only=True)
     
     def validate(self, attrs):
+        username = attrs.get("username",None)
         email = attrs.get("email",None)
         password = attrs.get("password",None)
-
+        print(username,"username kelmadi")
+        
+        # if username is None:
+        #     user = authenticate(email=email,password=password)
+        # else:
         user = authenticate(email=email,password=password)
         if user is None:
             raise serializers.ValidationError({"message":"email or password error"})

@@ -1,7 +1,9 @@
+from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth import authenticate, get_user_model
 from rest_framework.authtoken.models import Token
-
+from rest_framework.fields import ReadOnlyField
+from .models import Profile
 
 User = get_user_model()
 
@@ -45,3 +47,9 @@ class UserLoginSerializer(serializers.Serializer):
         if user is None:
             raise serializers.ValidationError({"message":"email or password error"})
         return user
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile.objects.all()
+        fields = "__all__"
+        ReadOnlyField = ['coin']

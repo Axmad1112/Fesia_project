@@ -23,16 +23,3 @@ class ProfileUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileModelSerializer
 
-# class ProfileRetrieveAPIView(generics.RetrieveAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileModelSerializer
-
-
-# class ProfileUpdateAPIView(generics.UpdateAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileModelSerializer
-
-
-# class ProfileDestroyAPIView(generics.DestroyAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = ProfileModelSerializer

@@ -51,21 +51,26 @@ class Video(models.Model):
         return self.name
 
 class Task(models.Model):
+    user = models.ForeignKey("customer.User",on_delete=models.CASCADE,related_name="user", null=True)
     lesson = models.ForeignKey("api.Lesson", on_delete=models.CASCADE, related_name="task_lesson",null=True)
     text = models.TextField()
+    file = models.FileField(upload_to="homework",null=True, blank=True)
+    github_link = models.URLField(null=True,blank=True)
+    create_at = models.DateTimeField(auto_now=True)
+    
 
     def __str__(self):
         return self.text
 
-class Homework(models.Model):
-    user = models.ForeignKey("customer.User",on_delete=models.CASCADE,related_name="user")
-    task = models.ForeignKey("api.Task",on_delete=models.CASCADE,related_name="task")
-    file = models.FileField(upload_to="homework")
-    github_link = models.URLField(null=True)
+# class Homework(models.Model):
+#     user = models.ForeignKey("customer.User",on_delete=models.CASCADE,related_name="user")
+#     task = models.ForeignKey("api.Task",on_delete=models.CASCADE,related_name="task")
+#     file = models.FileField(upload_to="homework")
+#     github_link = models.URLField(null=True)
     
 
-    def __str__(self):
-        return f"{self.task}"
+#     def __str__(self):
+#         return f"{self.task}"
 
 
 

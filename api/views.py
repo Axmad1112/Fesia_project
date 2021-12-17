@@ -1,6 +1,6 @@
 from rest_framework import generics, serializers, viewsets, permissions
-from .serializers import CategorySerializer,TaskSerializer,HomeworkSerializer,TeacherSerializer,VideoSerializer,CourseSerializer,CourseOpenUpdateSerializer
-from .models import Categories, Teacher, Course, Video, Task, Homework
+from .serializers import CategorySerializer,TaskSerializer,TeacherSerializer,VideoSerializer,CourseSerializer,CourseOpenUpdateSerializer
+from .models import Categories, Teacher, Course, Video, Task
 from customer.models import Profile
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import filters
@@ -57,26 +57,34 @@ class VideoDestroyAPIView(generics.DestroyAPIView):
     serializer_class = VideoSerializer
 
 class TaskListViewListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-
-class TaskDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-
-class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = Homework.objects.all()
-    serializer_class = HomeworkSerializer
-
+    
     def perform_create(self, serializer):
+            serializer.save(user=self.request.user)
+
+class TaskDetail(generics.RetrieveUpdateAPIView):
+    # permission_classes = [IsAuthenticated]
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    
+    def perform_update(self, serializer):
         serializer.save(user=self.request.user)
+    
+
+
+# class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
+#     permission_classes = [IsAuthenticated]
+#     queryset = Homework.objects.all()
+#     serializer_class = HomeworkSerializer
+
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
         
-class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
-    queryset = Homework.objects.all()
-    serializer_class = HomeworkSerializer
+# class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
+#     queryset = Homework.objects.all()
+#     serializer_class = HomeworkSerializer
 
 #Course
 class CourseViewSet(viewsets.ModelViewSet):

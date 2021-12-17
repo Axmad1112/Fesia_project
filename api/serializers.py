@@ -1,5 +1,6 @@
+from django.http import request
 from rest_framework import serializers
-from .models import Categories, Teacher, Course, Video, Task, Homework
+from .models import Categories, Teacher, Course, Video, Task
 
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,16 +13,26 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class TaskSerializer(serializers.ModelSerializer):
+    text = serializers.ReadOnlyField()
+    user = serializers.ReadOnlyField(source='user.username')
+    user_id = serializers.ReadOnlyField(source='user.id')
+    lesson = serializers.ReadOnlyField(source='lesson.name')
+    
     class Meta:
         model = Task
         fields = "__all__"
     
-class HomeworkSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source='user.username')
-    user_id = serializers.ReadOnlyField(source='user.id')
-    class Meta:
-        model = Homework
-        fields = "__all__"
+    def update(self, instance, validated_data):
+        if instance:
+            self.user=instance.user
+        return super().update(instance, validated_data)
+    
+# class HomeworkSerializer(serializers.ModelSerializer):
+#     user = serializers.ReadOnlyField(source='user.username')
+#     user_id = serializers.ReadOnlyField(source='user.id')
+#     class Meta:
+#         model = Homework
+#         fields = "__all__"
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:

@@ -63,8 +63,8 @@ class Task(models.Model):
 class Homework(models.Model):
     user = models.ForeignKey("customer.User",on_delete=models.CASCADE,related_name="homework_user")
     task = models.ForeignKey("api.Task",on_delete=models.CASCADE,related_name="task")
-    file = models.FileField(upload_to="homework")
-    github_link = models.URLField(null=True)
+    file = models.FileField(upload_to="homework", null=True, blank=True)
+    github_link = models.URLField(null=True,blank=True)
     create_at = models.DateTimeField(auto_now=True)
     
 

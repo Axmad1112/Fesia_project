@@ -38,7 +38,7 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 class VideoListCreateAPIView(generics.ListCreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
@@ -47,17 +47,17 @@ class VideoRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = VideoSerializer
 
 class VideoUpdateAPIView(generics.UpdateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
 class VideoDestroyAPIView(generics.DestroyAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Video.objects.all()
     serializer_class = VideoSerializer
 
 class TaskListViewListCreateAPIView(generics.ListCreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     
@@ -65,7 +65,7 @@ class TaskListViewListCreateAPIView(generics.ListCreateAPIView):
             serializer.save(user=self.request.user)
 
 class TaskDetail(generics.RetrieveUpdateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     
@@ -88,6 +88,7 @@ class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
 
 #Course
 class CourseViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     filter_backends = [filters.SearchFilter]
@@ -96,7 +97,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         todo = Course.objects.filter(banned__isnull=False)
         return todo
-    # permission_classes = [permissions.IsAuthenticated]
     
 #banned kurslar
 class CourseBannedViewSet(generics.ListAPIView):
@@ -113,7 +113,7 @@ class CourseBannedViewSet(generics.ListAPIView):
 class CourseOpenUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course
     serializer_class = CourseOpenUpdateSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     
     def get_coin(self,cost):

@@ -1,6 +1,6 @@
 from rest_framework import generics, serializers, viewsets, permissions
 from .serializers import CategorySerializer,TaskSerializer,TeacherSerializer,VideoSerializer,CourseSerializer,CourseOpenUpdateSerializer,HomeworkSerializer
-from .models import Categories, Teacher, Course, Video, Task,Homework
+from .models import Categories, Teacher, Course, Video, Task, Homework
 from customer.models import Profile
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import filters

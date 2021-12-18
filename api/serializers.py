@@ -30,6 +30,7 @@ class TaskSerializer(serializers.ModelSerializer):
 class HomeworkSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     user_id = serializers.ReadOnlyField(source='user.id')
+    
     class Meta:
         model = Homework
         fields = "__all__"

@@ -1,6 +1,6 @@
 from rest_framework import generics, serializers, viewsets, permissions
-from .serializers import CategorySerializer,TaskSerializer,TeacherSerializer,VideoSerializer,CourseSerializer,CourseOpenUpdateSerializer
-from .models import Categories, Teacher, Course, Video, Task
+from .serializers import CategorySerializer,TaskSerializer,TeacherSerializer,VideoSerializer,CourseSerializer,CourseOpenUpdateSerializer,HomeworkSerializer
+from .models import Categories, Teacher, Course, Video, Task,Homework
 from customer.models import Profile
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import filters
@@ -74,17 +74,17 @@ class TaskDetail(generics.RetrieveUpdateAPIView):
     
 
 
-# class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
-#     permission_classes = [IsAuthenticated]
-#     queryset = Homework.objects.all()
-#     serializer_class = HomeworkSerializer
+class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = Homework.objects.all()
+    serializer_class = HomeworkSerializer
 
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
         
-# class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
-#     queryset = Homework.objects.all()
-#     serializer_class = HomeworkSerializer
+class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Homework.objects.all()
+    serializer_class = HomeworkSerializer
 
 #Course
 class CourseViewSet(viewsets.ModelViewSet):

@@ -2,6 +2,7 @@ from rest_framework import generics, serializers, viewsets, permissions
 from .serializers import CategorySerializer,TaskSerializer,TeacherSerializer,VideoSerializer,CourseSerializer,CourseOpenUpdateSerializer,HomeworkSerializer
 from .models import Categories, Teacher, Course, Video, Task, Homework
 from customer.models import Profile
+from bank.models import SpentCoin, CoinBase
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import filters, validators
 from django.shortcuts import get_object_or_404
@@ -122,11 +123,18 @@ class CourseOpenUpdateView(generics.RetrieveUpdateDestroyAPIView):
 
     
     def get_coin(self,cost):
+        coin_base = CoinBase.objects.first()
+        coin_base.coin+=cost
+        course=Course.objects.get(id=self.kwargs['pk'])
         profile_coin = Profile.objects.get(user=self.request.user)
         profile_coin.coin=profile_coin.coin-cost
-        profile_coin.save()
+        
         
         if profile_coin.coin>=0:
+            spent_coin = SpentCoin(from_profile=profile_coin,amount=cost,course=course, bank=coin_base)
+            spent_coin.save()
+            profile_coin.save()
+            coin_base.save()
             profile_coin.course.add(Course.objects.get(id=self.kwargs['pk']))
             return True
         return False

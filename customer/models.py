@@ -112,12 +112,12 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username}"
     
-    def save(self, *args, **kwargs):
-        bank = CoinBase.objects.first()
-        bank.coin-=self.coin
-        bank.save()
-        print(bank.coin,"bankdan pul olindi")
-        return super(Profile, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     bank = CoinBase.objects.first()
+    #     bank.coin-=self.coin
+    #     bank.save()
+    #     print(bank.coin,"bankdan pul olindi")
+    #     return super(Profile, self).save(*args, **kwargs)
     
     
     def delete(self, *args, **kwargs):

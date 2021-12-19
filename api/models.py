@@ -31,7 +31,7 @@ class Course(models.Model):
     data = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.teacher_id} ning {self.name} kursi"
 
 
 class Lesson(models.Model):
@@ -40,7 +40,7 @@ class Lesson(models.Model):
     banned = models.BooleanField(default=True)
     
     def __str__(self):
-        return self.name
+        return f"{self.course} kursining {self.name} lessoni"
     
 class Video(models.Model):
     name = models.CharField(max_length=255)
@@ -49,18 +49,18 @@ class Video(models.Model):
     
     
     def __str__(self):
-        return self.name
+        return f"{self.lesson} videosi nomi {self.name}"
 
 class Task(models.Model):
     user = models.ForeignKey("customer.User",on_delete=models.CASCADE,related_name="user", null=True)
     lesson = models.ForeignKey("api.Lesson", on_delete=models.CASCADE, related_name="task_lesson",null=True)
     text = models.TextField()
     create_at = models.DateTimeField(auto_now=True)
-    
+    bonus_coin = models.IntegerField(null=True)
     
 
     def __str__(self):
-        return self.text
+        return f"{self.lesson} lessoni topshirig'i {self.text}"
 
 class Homework(models.Model):
     user = models.ForeignKey("customer.User",on_delete=models.CASCADE,related_name="homework_user")

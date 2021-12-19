@@ -1,12 +1,15 @@
 from customer.models import User
 from django.db.models.signals import post_save,post_delete
 from django.dispatch import receiver
-
+from bank.models import CoinBase
 from customer.models import Profile
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
+        bank = CoinBase.objects.first()
+        bank.coin-=1000
+        bank.save()
         Profile.objects.create(email=instance.email,  user=instance)
         
 

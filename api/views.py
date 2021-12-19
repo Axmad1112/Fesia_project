@@ -3,7 +3,7 @@ from .serializers import CategorySerializer,TaskSerializer,TeacherSerializer,Vid
 from .models import Categories, Teacher, Course, Video, Task, Homework
 from customer.models import Profile
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework import filters
+from rest_framework import filters, validators
 from django.shortcuts import get_object_or_404
 
 
@@ -80,7 +80,20 @@ class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = HomeworkSerializer
 
     def perform_create(self, serializer):
+        queryset = Homework.objects.filter(user=self.request.user)
+        # task_obj = Task.objects.get(text=queryset[0].task)
+        
+        # if queryset:
+        #     task_obj = Task.objects.get(text=queryset[0].task)
+        #     for obj in task_obj.homework_task.all():
+        #         if obj.user==self.request.user:
+        #             raise validators.ValidationError('You have already applyed homework')
         serializer.save(user=self.request.user)
+    
+    def get_serializer_context(self):
+        context = super(HomeworkViewListCreateAPIView, self).get_serializer_context()
+        context.update({"request": self.request})
+        return context
         
 class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Homework.objects.all()

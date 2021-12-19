@@ -1,5 +1,5 @@
 from django.http import request
-from rest_framework import serializers
+from rest_framework import serializers, validators
 from .models import Categories, Teacher, Course, Video, Task, Homework
 
 class TeacherSerializer(serializers.ModelSerializer):
@@ -30,10 +30,23 @@ class TaskSerializer(serializers.ModelSerializer):
 class HomeworkSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.username')
     user_id = serializers.ReadOnlyField(source='user.id')
-    
+    teacher = TeacherSerializer(read_only=True)
+    feedback = serializers.ReadOnlyField()
+
     class Meta:
         model = Homework
         fields = "__all__"
+    
+    def create(self, validated_data):
+        queryset = Homework.objects.filter(user=self.context['request'].user)
+        # print(str(queryset[1].task))
+        current_task = validated_data.get('task', None)
+        print(validated_data)
+        print(current_task, "xozirgi task")
+        for obj in queryset:
+            if str(obj.task)==str(current_task):
+                raise validators.ValidationError('You have already applyed homework')
+        return super().create(validated_data)
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:

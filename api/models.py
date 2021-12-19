@@ -9,6 +9,7 @@ class Teacher(models.Model):
     description = models.TextField()
     img = models.ImageField(upload_to="teacher_image")
     messanger = models.URLField()
+    user = models.OneToOneField("customer.User",on_delete=models.SET_NULL,null=True)
 
     def __str__(self):
         return self.full_name
@@ -62,11 +63,13 @@ class Task(models.Model):
 
 class Homework(models.Model):
     user = models.ForeignKey("customer.User",on_delete=models.CASCADE,related_name="homework_user")
-    task = models.ForeignKey("api.Task",on_delete=models.CASCADE,related_name="task")
+    task = models.ForeignKey("api.Task",on_delete=models.CASCADE,related_name="homework_task")
     file = models.FileField(upload_to="homework", null=True, blank=True)
     github_link = models.URLField(null=True,blank=True)
     create_at = models.DateTimeField(auto_now=True)
-    
+    teacher = models.ForeignKey("api.Teacher",on_delete=models.SET_NULL, null=True, blank=True)
+    feedback = models.TextField(blank=True, null=True)
+
 
     def __str__(self):
         return f"{self.task}ni-> {self.user} bajardi"

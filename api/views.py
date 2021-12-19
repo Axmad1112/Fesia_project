@@ -80,14 +80,6 @@ class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = HomeworkSerializer
 
     def perform_create(self, serializer):
-        queryset = Homework.objects.filter(user=self.request.user)
-        # task_obj = Task.objects.get(text=queryset[0].task)
-        
-        # if queryset:
-        #     task_obj = Task.objects.get(text=queryset[0].task)
-        #     for obj in task_obj.homework_task.all():
-        #         if obj.user==self.request.user:
-        #             raise validators.ValidationError('You have already applyed homework')
         serializer.save(user=self.request.user)
     
     def get_serializer_context(self):
@@ -95,7 +87,7 @@ class HomeworkViewListCreateAPIView(generics.ListCreateAPIView):
         context.update({"request": self.request})
         return context
         
-class HomeworkRetrieveAPIView(generics.RetrieveAPIView):
+class HomeworkRetrieveAPIView(generics.RetrieveUpdateAPIView):
     queryset = Homework.objects.all()
     serializer_class = HomeworkSerializer
 

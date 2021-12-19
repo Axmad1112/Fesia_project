@@ -32,7 +32,8 @@ class HomeworkSerializer(serializers.ModelSerializer):
     user_id = serializers.ReadOnlyField(source='user.id')
     teacher = TeacherSerializer(read_only=True)
     feedback = serializers.ReadOnlyField()
-
+    correct = serializers.ReadOnlyField()
+    
     class Meta:
         model = Homework
         fields = "__all__"

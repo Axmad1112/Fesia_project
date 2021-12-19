@@ -36,7 +36,7 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     name = models.CharField(max_length=255)
-    course = models.ForeignKey("api.Course", on_delete=models.CASCADE,related_name="course", null=True)
+    course = models.ForeignKey("api.Course", on_delete=models.CASCADE,related_name="lesson_course", null=True)
     banned = models.BooleanField(default=True)
     
     def __str__(self):
@@ -57,6 +57,7 @@ class Task(models.Model):
     text = models.TextField()
     create_at = models.DateTimeField(auto_now=True)
     
+    
 
     def __str__(self):
         return self.text
@@ -69,10 +70,12 @@ class Homework(models.Model):
     create_at = models.DateTimeField(auto_now=True)
     teacher = models.ForeignKey("api.Teacher",on_delete=models.SET_NULL, null=True, blank=True)
     feedback = models.TextField(blank=True, null=True)
+    correct = models.BooleanField(default=False, null=True)
+
 
 
     def __str__(self):
-        return f"{self.task}ni-> {self.user} bajardi"
+        return f"{self.task} ni-> {self.user} bajardi"
 
 
 

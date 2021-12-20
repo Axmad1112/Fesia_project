@@ -1,5 +1,8 @@
+from django.db.models.query import QuerySet
 from rest_framework import generics,views
 from rest_framework.response import Response
+
+from api.models import Course
 from .serializers import UserLoginSerializer, UserRegisterSerializer,ProfileModelSerializer
 from .models import User, Profile
 
@@ -22,4 +25,6 @@ class ProfileListAPIView(generics.ListAPIView):
 class ProfileUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileModelSerializer
+
+   
 

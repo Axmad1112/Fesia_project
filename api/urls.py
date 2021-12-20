@@ -6,7 +6,7 @@ from .views import (
     VideoListCreateAPIView,VideoRetrieveAPIView,
     VideoUpdateAPIView,VideoDestroyAPIView,
    CourseViewSet,CourseOpenUpdateView,
-    CourseBannedViewSet
+    MyCourseViewSet
     )
 from rest_framework import routers
 
@@ -27,7 +27,8 @@ urlpatterns = [
     path("video/<int:pk>/",VideoRetrieveAPIView.as_view()),
     path("video/<int:pk>/update/",VideoUpdateAPIView.as_view()),
     path("video/<int:pk>/delete/",VideoDestroyAPIView.as_view()),
+    # path("course/<int:pk>/open/",CourseOpenUpdateView.as_view()),
     path("course/<int:pk>/open/",CourseOpenUpdateView.as_view()),
-    path("course/banned/",CourseBannedViewSet.as_view()),
+    path("my_course/",MyCourseViewSet.as_view()),
     
 ] + router.urls

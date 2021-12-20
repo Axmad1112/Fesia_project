@@ -27,7 +27,8 @@ class Course(models.Model):
     category_id = models.ForeignKey("api.Categories", on_delete=models.CASCADE,related_name="courses")
     teacher_id = models.ForeignKey("api.Teacher", on_delete=models.SET_NULL, related_name="courses",null=True)
     cost = models.IntegerField()
-    banned = models.BooleanField(default=False)
+    profile = models.ManyToManyField("customer.Profile",  blank=True)
+    # banned = models.BooleanField(default=False)
     data = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -37,7 +38,8 @@ class Course(models.Model):
 class Lesson(models.Model):
     name = models.CharField(max_length=255)
     course = models.ForeignKey("api.Course", on_delete=models.CASCADE,related_name="lesson_course", null=True)
-    banned = models.BooleanField(default=True)
+    profile = models.ManyToManyField("customer.Profile",  blank=True)
+    # banned = models.BooleanField(default=True)
     
     def __str__(self):
         return f"{self.course} kursining {self.name} lessoni"

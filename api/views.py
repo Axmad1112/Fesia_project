@@ -6,7 +6,7 @@ from bank.models import SpentCoin, CoinBase
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework import filters, validators
 from django.shortcuts import get_object_or_404
-
+from django.db.models import Q
 
 
 #GET and POST
@@ -101,18 +101,21 @@ class CourseViewSet(viewsets.ModelViewSet):
     search_fields = ['name','teacher_id']
     
     def get_queryset(self):
-        todo = Course.objects.filter(banned__isnull=False)
+        profile = Profile.objects.get(user=self.request.user)
+        # todo = Course.objects.filter(~Q(profile=profile))
+        todo = Course.objects.all()
         return todo
     
 #banned kurslar
-class CourseBannedViewSet(generics.ListAPIView):
+class MyCourseViewSet(generics.ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name','teacher_id']
     
     def get_queryset(self):
-        todo = Course.objects.filter(banned=True)
+        profile = Profile.objects.get(user=self.request.user)
+        todo = Course.objects.filter(profile=profile)
         return todo
     
 #Course open view
@@ -135,17 +138,18 @@ class CourseOpenUpdateView(generics.RetrieveUpdateDestroyAPIView):
             spent_coin.save()
             profile_coin.save()
             coin_base.save()
-            profile_coin.course.add(Course.objects.get(id=self.kwargs['pk']))
+            # profile_coin.course.add(Course.objects.get(id=self.kwargs['pk']))
+            course.profile.add(profile_coin)
+            course.save()
             return True
         return False
     
     def perform_update(self, serializer):
         costs = self.get_coin(serializer.instance.cost)
         if costs is True:
-            serializer.instance.banned = False
+            serializer.save()
         else:
-            serializer.instance.banned = True
-        serializer.save()
+            raise validators.ValidationError("nimadir hato")
         return super().perform_update(serializer)
     
 

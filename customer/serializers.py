@@ -51,3 +51,5 @@ class ProfileModelSerializer(serializers.ModelSerializer):
         model = Profile
         fields = "__all__"
 
+
+

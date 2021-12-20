@@ -24,7 +24,7 @@ class SpentCoin(models.Model):
     create_at = models.DateTimeField(auto_now=True)
     
     def __str__(self): 
-        return f"{self.from_profile} profil egasi '{self.course}' kurs sotib oldi| coin: {self.amount} va bazada {self.bank}"
+        return f"{self.from_profile} profil egasi '{self.course}' kurs sotib oldi| coin: {self.amount} va unda {self.from_profile.coin}"
 
 class EarnCoin(models.Model):
     to_profile = models.ForeignKey("customer.Profile", on_delete=models.SET_NULL, null=True)
@@ -34,4 +34,4 @@ class EarnCoin(models.Model):
     create_at = models.DateTimeField(auto_now=True)
     
     def __str__(self): 
-        return f"{self.to_profile}-profil egasi {self.task} topshiriqdan| {self.amount} coinga erishdi "
+        return f"{self.to_profile}-profil egasi {self.task} topshiriqdan| {self.amount} coinga erishdi va unda {self.to_profile.coin}"

@@ -105,7 +105,7 @@ class Profile(models.Model):
     image = models.ImageField(upload_to="profile_image")
     english_degree = models.CharField(choices=ENLISH_LEVEL,max_length=200)
     user = models.OneToOneField("customer.User",on_delete=models.CASCADE)
-    course = models.ManyToManyField("api.Course")
+    # course = models.ManyToManyField("api.Course")
     coin = models.IntegerField(default=1000)
     phone_number = models.CharField(max_length=13)
 
